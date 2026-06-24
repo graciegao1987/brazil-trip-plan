@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>巴西一周旅行智能计划 · 旧金山往返 · 3人 · 人均$1000</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #1D9E75; --green-light: #E1F5EE; --green-mid: #9FE1CB;
+    --teal-dark: #0F6E56; --amber: #BA7517; --amber-light: #FAEEDA; --amber-mid: #FAC775;
+    --coral: #D85A30; --coral-light: #FAECE7; --blue: #185FA5; --blue-light: #E6F1FB;
+    --purple: #534AB7; --purple-light: #EEEDFE; --gray: #5F5E5A; --gray-light: #F1EFE8;
+    --gray-mid: #D3D1C7; --text: #2C2C2A; --text-muted: #5F5E5A; --text-hint: #888780;
+    --bg: #FAFAF8; --bg-card: #FFFFFF; --border: rgba(0,0,0,0.1); --radius: 12px; --radius-sm: 8px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #1D9E75 0%, #0F6E56 100%); color: white; padding: 40px 24px 32px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.08); }
+  .header::after { content:''; position:absolute; bottom:-60px; left:-30px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,0.05); }
+  .header-flag { font-size: 52px; margin-bottom: 12px; }
+  .header h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 8px; }
+  .header p { font-size: 14px; opacity: 0.85; }
+  .header-badges { display:flex; gap:8px; justify-content:center; margin-top:16px; flex-wrap:wrap; }
+  .badge { background:rgba(255,255,255,0.2); color:white; border-radius:20px; padding:4px 14px; font-size:12px; font-weight:500; backdrop-filter:blur(4px); }
+  .nav-tabs { display:flex; overflow-x:auto; gap:0; background:white; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; padding:0 8px; }
+  .nav-tab { padding:12px 16px; font-size:13px; font-weight:500; color:var(--text-muted); cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; transition:all 0.2s; user-select:none; }
+  .nav-tab.active { color:var(--green); border-bottom-color:var(--green); }
+  .nav-tab:hover { color:var(--text); }
+  .section { display:none; padding:20px 16px; max-width:720px; margin:0 auto; }
+  .section.active { display:block; }
+  .card { background:var(--bg-card); border-radius:var(--radius); border:0.5px solid var(--border); padding:16px 18px; margin-bottom:14px; }
+  .card-title { font-size:15px; font-weight:500; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .card-sub { font-size:12px; color:var(--text-hint); margin-bottom:12px; }
+  .metric-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; }
+  .metric-grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
+  @media(max-width:420px){ .metric-grid-4{ grid-template-columns:repeat(2,1fr); } }
+  .metric-card { background:var(--gray-light); border-radius:var(--radius-sm); padding:12px; text-align:center; }
+  .metric-label { font-size:11px; color:var(--text-hint); margin-bottom:4px; }
+  .metric-value { font-size:20px; font-weight:500; color:var(--text); }
+  .metric-value.green { color:var(--green); } .metric-value.amber { color:var(--amber); } .metric-value.coral { color:var(--coral); } .metric-value.blue { color:var(--blue); }
+  .budget-item { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .budget-label { font-size:13px; color:var(--text); min-width:72px; } .budget-bar-wrap { flex:1; height:8px; background:var(--gray-light); border-radius:4px; overflow:hidden; }
+  .budget-bar { height:100%; border-radius:4px; transition:width 0.6s ease; } .budget-amount { font-size:13px; font-weight:500; min-width:64px; text-align:right; }
+  .day-card { background:var(--bg-card); border-radius:var(--radius); border:0.5px solid var(--border); margin-bottom:12px; overflow:hidden; }
+  .day-header { padding:12px 16px; display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; }
+  .day-num { width:36px; height:36px; border-radius:50%; background:var(--green-light); color:var(--teal-dark); display:flex; align-items:center; justify-content:center; font-weight:500; font-size:13px; flex-shrink:0; }
+  .day-title { flex:1; } .day-title-text { font-size:14px; font-weight:500; } .day-title-sub { font-size:12px; color:var(--text-hint); }
+  .day-toggle { font-size:16px; color:var(--text-hint); transition:transform 0.2s; } .day-toggle.open { transform:rotate(180deg); }
+  .day-body { padding:0 16px 14px; display:none; } .day-body.open { display:block; }
+  .timeline-item { display:flex; gap:12px; margin-bottom:10px; position:relative; }
+  .timeline-item::before { content:''; position:absolute; left:15px; top:26px; width:1px; height:calc(100% + 6px); background:var(--gray-mid); } .timeline-item:last-child::before { display:none; }
+  .timeline-dot { width:30px; height:30px; flex-shrink:0; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; z-index:1; }
+  .timeline-dot.eat { background:var(--amber-light); } .timeline-dot.see { background:var(--green-light); } .timeline-dot.move { background:var(--blue-light); } .timeline-dot.sleep { background:var(--purple-light); } .timeline-dot.fun { background:var(--coral-light); }
+  .timeline-content { flex:1; padding-top:4px; } .timeline-time { font-size:11px; color:var(--text-hint); } .timeline-title { font-size:13px; font-weight:500; color:var(--text); } .timeline-desc { font-size:12px; color:var(--text-muted); line-height:1.5; margin-top:2px; }
+  .tip-tag { display:inline-block; font-size:11px; padding:2px 8px; border-radius:10px; margin-top:4px; margin-right:4px; }
+  .tip-camera { background:var(--green-light); color:var(--teal-dark); } .tip-food { background:var(--amber-light); color:var(--amber); } .tip-cost { background:var(--blue-light); color:var(--blue); } .tip-warn { background:var(--coral-light); color:var(--coral); }
+  .resto-item { display:flex; gap:12px; padding:12px 0; border-bottom:0.5px solid var(--border); } .resto-item:last-child { border-bottom:none; }
+  .resto-icon { width:44px; height:44px; border-radius:var(--radius-sm); background:var(--amber-light); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .resto-info { flex:1; } .resto-name { font-size:14px; font-weight:500; } .resto-type { font-size:12px; color:var(--text-hint); margin:2px 0; } .resto-desc { font-size:12px; color:var(--text-muted); } .resto-price { font-size:13px; font-weight:500; color:var(--coral); white-space:nowrap; }
+  .stars { color:var(--amber); font-size:11px; }
+  .hostel-item { border-radius:var(--radius-sm); border:0.5px solid var(--border); padding:14px; margin-bottom:10px; background:var(--bg-card); }
+  .hostel-header { display:flex; justify-content:space-between; align-items:flex-start; } .hostel-name { font-size:14px; font-weight:500; } .hostel-location { font-size:12px; color:var(--text-hint); margin-top:2px; }
+  .hostel-price-tag { background:var(--green-light); color:var(--teal-dark); padding:4px 10px; border-radius:20px; font-size:12px; font-weight:500; white-space:nowrap; }
+  .hostel-desc { font-size:12px; color:var(--text-muted); margin-top:8px; line-height:1.5; } .hostel-tags { margin-top:8px; display:flex; flex-wrap:wrap; gap:4px; }
+  .hostel-tag { font-size:11px; padding:2px 8px; border-radius:10px; background:var(--gray-light); color:var(--gray); }
+  .check-section { margin-bottom:16px; } .check-section-title { font-size:13px; font-weight:500; color:var(--text-muted); padding:6px 0; border-bottom:0.5px solid var(--border); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .check-item { display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:0.5px solid var(--gray-light); cursor:pointer; }
+  .check-item:last-child { border-bottom:none; } .check-box { width:18px; height:18px; border-radius:4px; border:1.5px solid var(--gray-mid); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; transition:all 0.15s; }
+  .check-box.checked { background:var(--green); border-color:var(--green); color:white; font-size:11px; } .check-text { font-size:13px; line-height:1.4; flex:1; } .check-text.checked { text-decoration:line-through; color:var(--text-hint); }
+  .check-note { font-size:11px; color:var(--text-hint); margin-top:2px; }
+  .visa-step { display:flex; gap:14px; margin-bottom:14px; align-items:flex-start; } .visa-num { width:28px; height:28px; border-radius:50%; background:var(--blue-light); color:var(--blue); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:500; flex-shrink:0; }
+  .visa-content { flex:1; } .visa-title { font-size:14px; font-weight:500; margin-bottom:3px; } .visa-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+  .alert { border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:12px; display:flex; gap:10px; align-items:flex-start; }
+  .alert-green { background:var(--green-light); border-left:3px solid var(--green); } .alert-amber { background:var(--amber-light); border-left:3px solid var(--amber); }
+  .alert-coral { background:var(--coral-light); border-left:3px solid var(--coral); } .alert-blue { background:var(--blue-light); border-left:3px solid var(--blue); }
+  .alert-icon { font-size:16px; flex-shrink:0; } .alert-text { font-size:13px; line-height:1.5; } .alert-text strong { display:block; margin-bottom:2px; }
+  .photo-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; } .photo-spot { border-radius:var(--radius-sm); border:0.5px solid var(--border); padding:12px; background:var(--bg-card); }
+  .photo-spot-icon { font-size:28px; margin-bottom:6px; } .photo-spot-name { font-size:13px; font-weight:500; margin-bottom:4px; } .photo-spot-tip { font-size:11px; color:var(--text-hint); line-height:1.4; } .photo-spot-best { font-size:11px; color:var(--green); margin-top:4px; font-weight:500; }
+  .budget-toggle { display:flex; gap:8px; margin-bottom:16px; } .budget-toggle-btn { padding:6px 16px; border-radius:20px; font-size:12px; font-weight:500; border:1px solid var(--border); cursor:pointer; background:white; color:var(--text-muted); transition:all 0.15s; } .budget-toggle-btn.active { background:var(--green); color:white; border-color:var(--green); }
+  .section-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; } .section-icon { width:36px; height:36px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .section-title { font-size:17px; font-weight:500; } .section-sub { font-size:12px; color:var(--text-hint); margin-top:2px; }
+  .progress-bar-wrap { height:4px; background:var(--gray-light); border-radius:2px; margin-bottom:4px; } .progress-bar { height:100%; border-radius:2px; background:var(--green); transition:width 0.3s; } .progress-label { font-size:11px; color:var(--text-hint); }
+  .divider { height:0.5px; background:var(--border); margin:16px 0; }
+  .footer { text-align:center; padding:24px 16px; color:var(--text-hint); font-size:12px; border-top:0.5px solid var(--border); margin-top:8px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-flag">🇧🇷</div>
+  <h1>巴西一周旅行智能计划</h1>
+  <p>旧金山 SFO 往返 · 里约热内卢 · 3人同行 · 出片打卡 · 当地美食</p>
+  <div class="header-badges">
+    <span class="badge">📍 旧金山 SFO 往返</span>
+    <span class="badge">👥 3人同住一室</span>
+    <span class="badge">💰 人均 $1,000</span>
+    <span class="badge">📸 出片向</span>
+    <span class="badge">🗓️ 7天6夜</span>
+    <span class="badge">✅ 免签入境</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav-tabs" id="navTabs">
+  <div class="nav-tab active" onclick="switchTab('overview')">概览</div>
+  <div class="nav-tab" onclick="switchTab('itinerary')">行程</div>
+  <div class="nav-tab" onclick="switchTab('food')">美食</div>
+  <div class="nav-tab" onclick="switchTab('stay')">住宿</div>
+  <div class="nav-tab" onclick="switchTab('budget')">预算</div>
+  <div class="nav-tab" onclick="switchTab('photo')">出片</div>
+  <div class="nav-tab" onclick="switchTab('visa')">签证</div>
+  <div class="nav-tab" onclick="switchTab('checklist')">准备</div>
+</div>
+
+<!-- ===== OVERVIEW ===== -->
+<div class="section active" id="section-overview">
+
+  <div class="metric-grid-4" style="margin-top:16px">
+    <div class="metric-card">
+      <div class="metric-label">总预算</div>
+      <div class="metric-value green">$3,000</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">人均</div>
+      <div class="metric-value">$1,000</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">出行人数</div>
+      <div class="metric-value blue">3人</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">旅行天数</div>
+      <div class="metric-value amber">7天</div>
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <span class="alert-icon">✈️</span>
+    <div class="alert-text">
+      <strong>航班参考：旧金山（SFO）↔ 里约（GIG）</strong><br>
+      无直飞，需在中美洲（巴拿马城、休斯顿）或南美枢纽（波哥大、利马）转机一次。<br>
+      推荐航司：Copa Airlines（巴拿马航空）、United（经休斯顿）、Avianca（经波哥大）、LATAM。<br>
+      往返约 <strong>$800–1,000/人</strong>，提前2个月购买最划算。
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <span class="alert-icon">🎉</span>
+    <div class="alert-text">
+      <strong>免签好消息！</strong>
+      巴西对持中国普通护照和美国护照的公民均实施免签入境，每次停留不超过30天。一周旅行无需提前办理签证！
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗺️ 行程概述</div>
+    <div class="card-sub">以里约热内卢为核心 + 周边一日游</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 1</strong> · 从 SFO 出发，次日抵达里约，Copacabana 初探</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 2</strong> · 伊帕内玛海滩 + 阿尔波拉多尔日落</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 3</strong> · 面包山缆车 + 塞拉龙阶梯 + 拉帕桑巴夜生活</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 4</strong> · 基督山耶稣像 + Santa Teresa 文艺街区</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 5</strong> · 马拉卡纳/植物园（自由活动）+ 桑巴表演</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 6</strong> · 帕拉蒂古镇一日游（2小时大巴）</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--coral);flex-shrink:0"></div><span style="font-size:13px"><strong>Day 7</strong> · 购物手信 + 前往机场返程 SFO</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 三人同行优势</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
+      <div style="text-align:center;padding:10px;background:var(--green-light);border-radius:var(--radius-sm)">
+        <div style="font-size:22px;margin-bottom:4px">🏠</div>
+        <div style="font-size:12px;font-weight:500;color:var(--teal-dark)">住宿均摊</div>
+        <div style="font-size:11px;color:var(--text-hint);margin-top:2px">三人同住<br>每晚仅~$30/人</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:var(--amber-light);border-radius:var(--radius-sm)">
+        <div style="font-size:22px;margin-bottom:4px">🚕</div>
+        <div style="font-size:12px;font-weight:500;color:var(--amber)">出行分摊</div>
+        <div style="font-size:11px;color:var(--text-hint);margin-top:2px">打车Uber<br>费用三人平摊</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:var(--blue-light);border-radius:var(--radius-sm)">
+        <div style="font-size:22px;margin-bottom:4px">📸</div>
+        <div style="font-size:12px;font-weight:500;color:var(--blue)">互相出片</div>
+        <div style="font-size:11px;color:var(--text-hint);margin-top:2px">三人轮流<br>拍摄互助</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-amber">
+    <span class="alert-icon">⚠️</span>
+    <div class="alert-text">
+      <strong>安全提示</strong>
+      里约热内卢治安复杂，建议在热门景区和海滩区域活动，避免夜间独自前往偏僻街区。随身携带小额现金，手机不要随意展示。推荐住在Copacabana、Ipanema或Santa Teresa。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌡️ 最佳旅行时间</div>
+    <div style="margin-top:10px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:4px 12px;border-radius:20px;background:var(--coral-light);color:var(--coral);font-size:12px">1-2月 热带夏季（湿热）</span>
+        <span style="padding:4px 12px;border-radius:20px;background:var(--green-light);color:var(--teal-dark);font-size:12px;font-weight:500">⭐ 5-9月 最佳（凉爽干燥）</span>
+        <span style="padding:4px 12px;border-radius:20px;background:var(--blue-light);color:var(--blue);font-size:12px">10-12月 雨季（仍可出行）</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">南半球冬季（6-8月）是里约旅行的黄金期：气温22-26°C，降雨少，拍照光线好，人流相对较少，价格更实惠。注意这是旧金山冬季，出发时带保暖衣物。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ITINERARY ===== -->
+<div class="section" id="section-itinerary">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--green-light)">🗓️</div>
+    <div>
+      <div class="section-title">7天详细行程</div>
+      <div class="section-sub">点击每天展开详情 · 旧金山 SFO 出发</div>
+    </div>
+  </div>
+
+  <!-- Day 1 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(1)">
+      <div class="day-num">D1</div>
+      <div class="day-title">
+        <div class="day-title-text">出发日 · 飞往里约</div>
+        <div class="day-title-sub">SFO 起飞 · 中转 · 抵达里约</div>
+      </div>
+      <div class="day-toggle" id="toggle-1">▼</div>
+    </div>
+    <div class="day-body" id="day-1">
+      <div class="timeline-item">
+        <div class="timeline-dot move">✈️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">Day 1 晚间</div>
+          <div class="timeline-title">从旧金山 SFO 机场出发</div>
+          <div class="timeline-desc">建议预订晚间出发航班（如 Copa 经巴拿马城，或 United 经休斯顿），飞行约10-14小时（含中转）。提前3小时到 SFO 办理登机。</div>
+          <span class="tip-tag tip-cost">SFO 国际航站楼出发</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot move">🛬</div>
+        <div class="timeline-content">
+          <div class="timeline-time">Day 2 早晨</div>
+          <div class="timeline-title">抵达里约国际机场 GIG</div>
+          <div class="timeline-desc">办理入境手续（免签，备好往返机票和住宿证明）。乘 Uber 约45分钟前往住宿地（约 R$60-80 / $12-15）。</div>
+          <span class="tip-tag tip-warn">备好机票+住宿确认单</span>
+          <span class="tip-tag tip-cost">Uber $12-15/次·三人分摊</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot sleep">🏠</div>
+        <div class="timeline-content">
+          <div class="timeline-time">上午-下午</div>
+          <div class="timeline-title">办理入住 + 倒时差休息</div>
+          <div class="timeline-desc">巴西比旧金山快4小时（夏令时期间为3小时）。抵达后先休息调整，下午可在附近海滩散步适应环境。</div>
+          <span class="tip-tag tip-cost">住宿约$90-100/晚·三人</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot eat">🍽️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">晚餐</div>
+          <div class="timeline-title">Copacabana 海滩边晚餐</div>
+          <div class="timeline-desc">推荐在海滩边的 kiosk（小摊亭）点海鲜拼盘 + Caipirinha，边吃边看大西洋日落，第一晚轻松开启旅程。</div>
+          <span class="tip-tag tip-food">海鲜拼盘 人均$15-25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(2)">
+      <div class="day-num">D2</div>
+      <div class="day-title">
+        <div class="day-title-text">伊帕内玛 · 阿尔波拉多尔日落</div>
+        <div class="day-title-sub">海滩拍照 · 当地市集 · 里约最美日落</div>
+      </div>
+      <div class="day-toggle" id="toggle-2">▼</div>
+    </div>
+    <div class="day-body" id="day-2">
+      <div class="timeline-item">
+        <div class="timeline-dot eat">☕</div>
+        <div class="timeline-content">
+          <div class="timeline-time">08:00-09:00</div>
+          <div class="timeline-title">早餐：当地 padaria 面包房</div>
+          <div class="timeline-desc">巴西 pão de queijo（奶酪面包球）+ 浓缩咖啡，这是巴西日常早餐</div>
+          <span class="tip-tag tip-food">必吃奶酪面包球</span>
+          <span class="tip-tag tip-cost">人均$3-5</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🏖️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">09:30-12:00</div>
+          <div class="timeline-title">伊帕内玛海滩</div>
+          <div class="timeline-desc">上午光线最佳，面向大西洋的白色沙滩，背景是 Dois Irmãos 双峰山。这里比科帕卡巴纳更时尚，是年轻人聚集地</div>
+          <span class="tip-tag tip-camera">最佳拍照时段 09:00-11:00</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🌅</div>
+        <div class="timeline-content">
+          <div class="timeline-time">17:00-19:00</div>
+          <div class="timeline-title">阿尔波拉多尔观景台日落</div>
+          <div class="timeline-desc">Mirante do Arpoador，伊帕内玛和科帕卡巴纳交界处的礁石台，里约最知名日落观赏点，日落时全场欢呼鼓掌</div>
+          <span class="tip-tag tip-camera">里约最美日落拍照</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot eat">🍹</div>
+        <div class="timeline-content">
+          <div class="timeline-time">20:00-22:00</div>
+          <div class="timeline-title">晚餐 + Caipirinha 体验</div>
+          <div class="timeline-desc">在伊帕内玛街区找一家露天餐厅，品尝巴西国民鸡尾酒卡琵历尼亚（Caipirinha）和 BBQ 肉串</div>
+          <span class="tip-tag tip-food">必喝 Caipirinha</span>
+          <span class="tip-tag tip-cost">人均$15-25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(3)">
+      <div class="day-num">D3</div>
+      <div class="day-title">
+        <div class="day-title-text">面包山 · 塞拉龙阶梯 · 拉帕夜生活</div>
+        <div class="day-title-sub">缆车俯瞰 · 彩色阶梯 · 桑巴之夜</div>
+      </div>
+      <div class="day-toggle" id="toggle-3">▼</div>
+    </div>
+    <div class="day-body" id="day-3">
+      <div class="timeline-item">
+        <div class="timeline-dot see">🚡</div>
+        <div class="timeline-content">
+          <div class="timeline-time">08:30-12:00</div>
+          <div class="timeline-title">面包山（Pão de Açúcar）缆车</div>
+          <div class="timeline-desc">分两段缆车登顶，俯瞰里约、科帕卡巴纳、湾区和耶稣像全景。建议清晨前往避开人流，光线也最好</div>
+          <span class="tip-tag tip-camera">360°全景出片神地</span>
+          <span class="tip-tag tip-cost">门票约$30/人·提前网购</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot eat">🥩</div>
+        <div class="timeline-content">
+          <div class="timeline-time">13:00-14:30</div>
+          <div class="timeline-title">午餐：Churrascaria Rodízio</div>
+          <div class="timeline-desc">巴西烤肉自助餐（Rodízio）！服务员持不同部位肉串轮番上桌，无限畅吃，这是巴西必体验用餐方式</div>
+          <span class="tip-tag tip-food">巴西烤肉自助 必体验</span>
+          <span class="tip-tag tip-cost">人均$20-30</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🎨</div>
+        <div class="timeline-content">
+          <div class="timeline-time">15:00-17:00</div>
+          <div class="timeline-title">塞拉龙阶梯（Escadaria Selarón）</div>
+          <div class="timeline-desc">智利艺术家塞拉龙用全球216个国家瓷砖拼贴的215级台阶，颜色鲜艳，每个角度都是大片！位于拉帕区</div>
+          <span class="tip-tag tip-camera">超出片 建议多角度拍</span>
+          <span class="tip-tag tip-cost">免费参观</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot fun">🎵</div>
+        <div class="timeline-content">
+          <div class="timeline-time">21:00-01:00</div>
+          <div class="timeline-title">拉帕区（Lapa）桑巴夜生活</div>
+          <div class="timeline-desc">里约最热闹的夜生活区，拉帕拱廊旁的街头桑巴，Rio Scenarium 是最有名的桑巴俱乐部</div>
+          <span class="tip-tag tip-camera">街头桑巴拍摄</span>
+          <span class="tip-tag tip-cost">入场费约$10 + 消费</span>
+          <span class="tip-tag tip-warn">注意人身安全</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(4)">
+      <div class="day-num">D4</div>
+      <div class="day-title">
+        <div class="day-title-text">基督山耶稣像 · Santa Teresa</div>
+        <div class="day-title-sub">俯瞰全城 · 文艺街区漫游</div>
+      </div>
+      <div class="day-toggle" id="toggle-4">▼</div>
+    </div>
+    <div class="day-body" id="day-4">
+      <div class="timeline-item">
+        <div class="timeline-dot see">✝️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">07:00-11:00</div>
+          <div class="timeline-title">基督山·耶稣像（Corcovado）</div>
+          <div class="timeline-desc">强烈建议早上7点前抵达！日出时云雾缭绕，光线绝美，且人少。乘坐小火车上山，提前网购门票</div>
+          <span class="tip-tag tip-camera">世界新七大奇迹 极致出片</span>
+          <span class="tip-tag tip-cost">门票含火车约$25/人</span>
+          <span class="tip-tag tip-warn">提前2周网购门票</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🎭</div>
+        <div class="timeline-content">
+          <div class="timeline-time">13:00-17:00</div>
+          <div class="timeline-title">Santa Teresa 波西米亚街区</div>
+          <div class="timeline-desc">里约最有文艺气息的山顶老街区，色彩斑斓的殖民建筑，街头涂鸦，咖啡馆，艺术品商店。复古电车穿街而过</div>
+          <span class="tip-tag tip-camera">街拍天堂</span>
+          <span class="tip-tag tip-camera">复古电车拍照</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot eat">🫖</div>
+        <div class="timeline-content">
+          <div class="timeline-time">15:00-16:30</div>
+          <div class="timeline-title">下午茶：Aprazível 餐厅</div>
+          <div class="timeline-desc">Santa Teresa 山顶的花园餐厅，热带植物环绕，可俯瞰里约湾，是网红拍照用餐地</div>
+          <span class="tip-tag tip-food">热带花园餐厅</span>
+          <span class="tip-tag tip-cost">人均$25-40</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 5 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(5)">
+      <div class="day-num">D5</div>
+      <div class="day-title">
+        <div class="day-title-text">自由活动日 · 马拉卡纳/植物园</div>
+        <div class="day-title-sub">按兴趣选择 · 桑巴表演</div>
+      </div>
+      <div class="day-toggle" id="toggle-5">▼</div>
+    </div>
+    <div class="day-body" id="day-5">
+      <div class="timeline-item">
+        <div class="timeline-dot see">⚽</div>
+        <div class="timeline-content">
+          <div class="timeline-time">09:00-12:00</div>
+          <div class="timeline-title">马拉卡纳球场参观（可选）</div>
+          <div class="timeline-desc">世界著名足球圣地，可购票参加球场导览，感受巴西足球文化。如遇比赛日可购票观赛</div>
+          <span class="tip-tag tip-cost">导览约$15/人</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🌿</div>
+        <div class="timeline-content">
+          <div class="timeline-time">13:00-16:00</div>
+          <div class="timeline-title">里约植物园 + 蒂茹卡森林</div>
+          <div class="timeline-desc">里约植物园有壮观的皇棕榈树大道，适合拍照。附近的蒂茹卡热带雨林是城市内最大的城市雨林</div>
+          <span class="tip-tag tip-camera">皇棕榈大道 对称构图</span>
+          <span class="tip-tag tip-cost">门票约$5/人</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot eat">🦐</div>
+        <div class="timeline-content">
+          <div class="timeline-time">19:00-21:30</div>
+          <div class="timeline-title">晚餐：正宗巴西烤肉 + 本地啤酒</div>
+          <div class="timeline-desc">推荐 Churrascaria Palace（科帕卡巴纳），体验巴西最正宗的烤肉宴，同伴互相拍美食大片</div>
+          <span class="tip-tag tip-food">巴西烤肉 人均$25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 6 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(6)">
+      <div class="day-num">D6</div>
+      <div class="day-title">
+        <div class="day-title-text">帕拉蒂古镇一日游</div>
+        <div class="day-title-sub">殖民古镇 · 热带海湾 · 白石街道</div>
+      </div>
+      <div class="day-toggle" id="toggle-6">▼</div>
+    </div>
+    <div class="day-body" id="day-6">
+      <div class="timeline-item">
+        <div class="timeline-dot move">🚌</div>
+        <div class="timeline-content">
+          <div class="timeline-time">07:00-09:30</div>
+          <div class="timeline-title">乘大巴前往帕拉蒂（Paraty）</div>
+          <div class="timeline-desc">从里约 Novo Rio 巴士站乘坐 Costa Verde 公司大巴，约2.5小时。沿途是绿意盎然的大西洋热带雨林海岸公路，风景极美</div>
+          <span class="tip-tag tip-cost">大巴约$15/人</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🏛️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">10:00-13:00</div>
+          <div class="timeline-title">帕拉蒂历史老城漫游</div>
+          <div class="timeline-desc">联合国教科文组织世界遗产，白色卵石街道上禁止机动车，18世纪葡属殖民建筑保存完好，教堂林立，是巴西最上镜的小镇</div>
+          <span class="tip-tag tip-camera">最上镜小镇 白色街道</span>
+          <span class="tip-tag tip-cost">免费逛街</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">⛵</div>
+        <div class="timeline-content">
+          <div class="timeline-time">14:00-17:00</div>
+          <div class="timeline-title">出海游船 + 热带海湾浮潜（可选）</div>
+          <div class="timeline-desc">帕拉蒂湾有65个小岛，当地游船会带你去秘密海湾和淡水瀑布，水清澈见底</div>
+          <span class="tip-tag tip-camera">热带海湾出片</span>
+          <span class="tip-tag tip-cost">游船约$20/人</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot move">🚌</div>
+        <div class="timeline-content">
+          <div class="timeline-time">18:00-20:30</div>
+          <div class="timeline-title">返回里约</div>
+          <div class="timeline-desc">乘大巴返回里约，晚餐可在里约街区随意寻找当地小馆</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 7 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(7)">
+      <div class="day-num">D7</div>
+      <div class="day-title">
+        <div class="day-title-text">购物手信 · 返程 SFO</div>
+        <div class="day-title-sub">手信采购 · 前往机场</div>
+      </div>
+      <div class="day-toggle" id="toggle-7">▼</div>
+    </div>
+    <div class="day-body" id="day-7">
+      <div class="timeline-item">
+        <div class="timeline-dot eat">🍹</div>
+        <div class="timeline-content">
+          <div class="timeline-time">09:00-11:00</div>
+          <div class="timeline-title">最后一顿早餐 + 巴西莓碗</div>
+          <div class="timeline-desc">在住宿附近找一家巴西面包房，点 Açaí 巴西莓碗 + 咖啡，告别里约</div>
+          <span class="tip-tag tip-food">Açaí 巴西莓碗 必吃</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot see">🛍️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">11:00-14:00</div>
+          <div class="timeline-title">购买手信纪念品</div>
+          <div class="timeline-desc">推荐地点：Feira de Artesanato 科帕卡巴纳手工艺品市集（周末）、Havaianas 哈瓦那人字拖旗舰店、当地 Cachaça 甘蔗酒</div>
+          <span class="tip-tag tip-cost">预留$50-80手信预算</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot move">✈️</div>
+        <div class="timeline-content">
+          <div class="timeline-time">15:00 前</div>
+          <div class="timeline-title">前往机场 · 返程旧金山</div>
+          <div class="timeline-desc">提前3小时到达机场。里约 GIG → 中转地 → 旧金山 SFO，飞行约16-20小时。抵达 SFO 为同日或次日。</div>
+          <span class="tip-tag tip-warn">提前3小时到机场</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOD ===== -->
+<div class="section" id="section-food">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--amber-light)">🍽️</div>
+    <div>
+      <div class="section-title">巴西特色美食推荐</div>
+      <div class="section-sub">当地人气餐厅 · 人均消费参考</div>
+    </div>
+  </div>
+
+  <div class="alert alert-amber">
+    <span class="alert-icon">🌶️</span>
+    <div class="alert-text">
+      <strong>巴西必吃清单</strong>
+      Feijoada（黑豆炖肉）/ Churrasco（巴西烤肉）/ Acarajé（炸豆饼）/ Pão de Queijo（奶酪面包球）/ Açaí（巴西莓碗）/ Caipirinha（卡琵历尼亚鸡尾酒）/ Coxinha（鸡肉炸饺）
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🥩 烤肉 / Churrascaria</div>
+    <div class="card-sub">巴西最著名的餐饮形式</div>
+    <div class="resto-item">
+      <div class="resto-icon">🔥</div>
+      <div class="resto-info">
+        <div class="resto-name">Churrascaria Palace</div>
+        <div class="resto-type">Rodízio烤肉自助 · 科帕卡巴纳</div>
+        <div class="stars">★★★★★</div>
+        <div class="resto-desc">里约最著名的烤肉餐厅之一，服务生持各种部位肉串巡桌，无限量供应，配有热带水果沙拉台</div>
+      </div>
+      <div class="resto-price">$30/人</div>
+    </div>
+    <div class="resto-item">
+      <div class="resto-icon">🔥</div>
+      <div class="resto-info">
+        <div class="resto-name">Fogo de Chão</div>
+        <div class="resto-type">高档烤肉 · 博塔弗戈区</div>
+        <div class="stars">★★★★★</div>
+        <div class="resto-desc">南美最知名的烤肉连锁，起源于南里奥格兰德州，肉质顶级，气氛热烈</div>
+      </div>
+      <div class="resto-price">$45/人</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🥘 传统家常菜</div>
+    <div class="card-sub">体验真实巴西日常饮食</div>
+    <div class="resto-item">
+      <div class="resto-icon">🫕</div>
+      <div class="resto-info">
+        <div class="resto-name">Bar do Mineiro</div>
+        <div class="resto-type">传统米纳斯菜 · Santa Teresa</div>
+        <div class="stars">★★★★☆</div>
+        <div class="resto-desc">Santa Teresa最受欢迎的老字号，招牌菜是Feijoada（黑豆炖肉）和Frango com Quiabo（秋葵炖鸡），氛围热闹</div>
+      </div>
+      <div class="resto-price">$15/人</div>
+    </div>
+    <div class="resto-item">
+      <div class="resto-icon">🍺</div>
+      <div class="resto-info">
+        <div class="resto-name">Boteco do Gomes</div>
+        <div class="resto-type">当地酒吧餐厅 · 各区</div>
+        <div class="stars">★★★★☆</div>
+        <div class="resto-desc">典型的巴西Boteco（小酒馆），冰镇Chopp啤酒配炸物小食，这才是巴西人的真实日常，价格亲民</div>
+      </div>
+      <div class="resto-price">$10/人</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🦞 海鲜 / 亚马逊风味</div>
+    <div class="card-sub">临海城市的新鲜海味</div>
+    <div class="resto-item">
+      <div class="resto-icon">🦞</div>
+      <div class="resto-info">
+        <div class="resto-name">Azul Marinho</div>
+        <div class="resto-type">高档海鲜 · 阿罗亚海滩</div>
+        <div class="stars">★★★★★</div>
+        <div class="resto-desc">坐在海边礁石上享用海鲜，龙虾、生蚝、大虾，海景极好，是里约最美海景餐厅之一</div>
+      </div>
+      <div class="resto-price">$35/人</div>
+    </div>
+    <div class="resto-item">
+      <div class="resto-icon">🥘</div>
+      <div class="resto-info">
+        <div class="resto-name">Moqueca 椰汁鱼咖喱</div>
+        <div class="resto-type">巴西北部风味 · 当地餐馆</div>
+        <div class="stars">★★★★☆</div>
+        <div class="resto-desc">巴西北部特色椰汁鱼咖喱（Moqueca），在当地小餐馆才能尝到最正宗味道，用棕榈油慢炖而成</div>
+      </div>
+      <div class="resto-price">$8-15/人</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌿 网红 / 打卡餐厅</div>
+    <div class="card-sub">颜值与美味兼顾</div>
+    <div class="resto-item">
+      <div class="resto-icon">🌺</div>
+      <div class="resto-info">
+        <div class="resto-name">Aprazível</div>
+        <div class="resto-type">热带花园餐厅 · Santa Teresa山顶</div>
+        <div class="stars">★★★★★</div>
+        <div class="resto-desc">热带植物环绕的露天餐厅，俯瞰里约湾，服务精致，菜品是巴西创意料理。颜值极高，每个角落都适合拍照</div>
+      </div>
+      <div class="resto-price">$30-45/人</div>
+    </div>
+    <div class="resto-item">
+      <div class="resto-icon">🍦</div>
+      <div class="resto-info">
+        <div class="resto-name">Açaí Brasil</div>
+        <div class="resto-type">巴西莓碗专卖 · 全城多家</div>
+        <div class="stars">★★★★☆</div>
+        <div class="resto-desc">巴西本地特色Açaí（亚马逊巴西莓）冰沙碗，加香蕉、颗粒麦片，是早餐或下午茶首选。颜色深紫，很上镜</div>
+      </div>
+      <div class="resto-price">$5-8/人</div>
+    </div>
+    <div class="resto-item">
+      <div class="resto-icon">🍺</div>
+      <div class="resto-info">
+        <div class="resto-name">Garota de Ipanema Bar</div>
+        <div class="resto-type">历史名酒吧 · 伊帕内玛</div>
+        <div class="stars">★★★★☆</div>
+        <div class="resto-desc">《The Girl from Ipanema》歌曲诞生地，创作者常来的角落现在设有铭牌，充满历史故事，Caipirinha必点</div>
+      </div>
+      <div class="resto-price">$10-15/人</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🥪 街头小吃（省钱首选）</div>
+    <div class="card-sub">$2-8即可饱餐</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px">
+      <div style="padding:10px;background:var(--amber-light);border-radius:var(--radius-sm)">
+        <div style="font-size:13px;font-weight:500">🧆 Pão de Queijo</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px">奶酪面包球，早餐必吃，约 R$2-4</div>
+      </div>
+      <div style="padding:10px;background:var(--green-light);border-radius:var(--radius-sm)">
+        <div style="font-size:13px;font-weight:500">🥥 椰子水</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px">海滩必喝，当地人直接开椰子，R$5-8</div>
+      </div>
+      <div style="padding:10px;background:var(--coral-light);border-radius:var(--radius-sm)">
+        <div style="font-size:13px;font-weight:500">🍗 Coxinha</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px">鸡肉炸饺，下午茶小食，R$3-6</div>
+      </div>
+      <div style="padding:10px;background:var(--blue-light);border-radius:var(--radius-sm)">
+        <div style="font-size:13px;font-weight:500">🐟 Acarajé</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px">巴伊亚炸豆饼，街头遇到必吃</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STAY ===== -->
+<div class="section" id="section-stay">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--purple-light)">🏠</div>
+    <div>
+      <div class="section-title">网红民宿推荐</div>
+      <div class="section-sub">3人同住一室 · 费用均摊</div>
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-label">住宿总费用（6晚）</div>
+      <div class="metric-value green">$450-600</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">人均住宿</div>
+      <div class="metric-value">$150-200</div>
+    </div>
+  </div>
+
+  <div class="alert alert-blue">
+    <span class="alert-icon">💡</span>
+    <div class="alert-text">
+      <strong>住宿选区建议</strong>
+      Copacabana、Ipanema 距海滩近、生活便利，是多数游客首选。Santa Teresa 更有艺术气息、适合出片，但上山需要Uber。三人同住私人房间（整租）是最优选择，比青旅宿舍划算且私密性更好。
+    </div>
+  </div>
+
+  <div style="font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:10px">⭐ 精选推荐民宿</div>
+
+  <div class="hostel-item" style="border:1.5px solid var(--green)">
+    <div style="font-size:11px;background:var(--green-light);color:var(--teal-dark);padding:3px 10px;border-radius:10px;width:fit-content;margin-bottom:8px;font-weight:500">⭐ 最推荐 · 性价比高</div>
+    <div class="hostel-header">
+      <div>
+        <div class="hostel-name">Chez Zany - Copacabana</div>
+        <div class="hostel-location">📍 科帕卡巴纳 · 距海滩步行5分钟</div>
+      </div>
+      <div class="hostel-price-tag">$80-100/晚</div>
+    </div>
+    <div class="hostel-desc">12年Airbnb超赞房东Julia主理，家庭旅舍概念，设施齐全含厨房、WiFi、宽敞露台。科帕卡巴纳全区，地铁站步行450米，附近餐厅和超市一应俱全。非常适合年轻背包客，可结识其他旅行者。评分4.93/5。</div>
+    <div class="hostel-tags">
+      <span class="hostel-tag">超赞房东</span>
+      <span class="hostel-tag">厨房自炊</span>
+      <span class="hostel-tag">地铁近</span>
+      <span class="hostel-tag">海滩5分钟</span>
+      <span class="hostel-tag">免费WiFi</span>
+    </div>
+  </div>
+
+  <div class="hostel-item" style="border:1.5px solid var(--amber)">
+    <div style="font-size:11px;background:var(--amber-light);color:var(--amber);padding:3px 10px;border-radius:10px;width:fit-content;margin-bottom:8px;font-weight:500">📸 最出片 · 艺术气息</div>
+    <div class="hostel-header">
+      <div>
+        <div class="hostel-name">Chez Elisa - Santa Teresa 小屋</div>
+        <div class="hostel-location">📍 Santa Teresa艺术区 · 山顶民居</div>
+      </div>
+      <div class="hostel-price-tag">$70-90/晚</div>
+    </div>
+    <div class="hostel-desc">Airbnb评分4.97/5，法国房东Elisa，殖民建筑风格小屋，花园中有猫狗，清晨鸟鸣声声，周边安全有障碍物管控。徒步可达塞拉龙阶梯15分钟，里约最有气质的住宿选择。</div>
+    <div class="hostel-tags">
+      <span class="hostel-tag">超高颜值</span>
+      <span class="hostel-tag">艺术氛围</span>
+      <span class="hostel-tag">出片神地</span>
+      <span class="hostel-tag">4.97分</span>
+      <span class="hostel-tag">私密安全</span>
+    </div>
+  </div>
+
+  <div class="hostel-item">
+    <div class="hostel-header">
+      <div>
+        <div class="hostel-name">Rio Vibes Hostel</div>
+        <div class="hostel-location">📍 Santa Teresa · 塞拉龙阶梯15分钟</div>
+      </div>
+      <div class="hostel-price-tag">$60-80/晚</div>
+    </div>
+    <div class="hostel-desc">Booking.com评分8.6分，位置便利，有共用厨房和休息室，免费WiFi。距里约现代艺术博物馆1.7公里，适合喜欢社交的年轻旅行者，可以在公共区域认识世界各地旅行者。</div>
+    <div class="hostel-tags">
+      <span class="hostel-tag">社交氛围</span>
+      <span class="hostel-tag">性价比高</span>
+      <span class="hostel-tag">公共厨房</span>
+      <span class="hostel-tag">背包客友好</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 订房注意事项</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px">提前2-4周通过Airbnb或Booking.com订房，暑期热门房源很快售罄</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px">选择整套出租（Entire home/apt）而非合租，三人均摊更合算且私密</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px">优先选择有超赞房东（Superhost）标志的房源，服务有保障</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--amber);font-size:14px;flex-shrink:0">!</span><span style="font-size:13px">里约治安分区明显，避免选择北区（Zona Norte）贫民窟附近的民宿</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BUDGET ===== -->
+<div class="section" id="section-budget">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--green-light)">💰</div>
+    <div>
+      <div class="section-title">详细预算规划（SFO 往返）</div>
+      <div class="section-sub">三人总计 $3,000 · 人均 $1,000</div>
+    </div>
+  </div>
+
+  <div class="alert alert-coral">
+    <span class="alert-icon">⚠️</span>
+    <div class="alert-text">
+      <strong>预算提示：SFO 往返机票较贵</strong>
+      旧金山往返里约机票约 $800-1,000/人，占人均预算的 80-100%。若机票价格偏高，建议在当地饮食和购物上适当节省，或考虑将预算提高至 $1,200-1,500/人以获得更舒适的体验。
+    </div>
+  </div>
+
+  <div class="budget-toggle">
+    <button class="budget-toggle-btn active" onclick="switchBudget('total')">总费用</button>
+    <button class="budget-toggle-btn" onclick="switchBudget('person')">人均费用</button>
+  </div>
+
+  <div class="card" id="budget-display">
+    <div class="card-title">💸 预算分项明细</div>
+    <div class="card-sub" id="budget-subtitle">三人总计 $3,000（机票按$900/人估算）</div>
+    <div style="margin-top:14px">
+      <div class="budget-item">
+        <div class="budget-label">✈️ 国际机票</div>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:90%;background:var(--coral)" id="bar-flight"></div></div>
+        <div class="budget-amount" style="color:var(--coral)" id="val-flight">$2,700</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-label">🏠 住宿</div>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:5%;background:var(--purple)" id="bar-stay"></div></div>
+        <div class="budget-amount" style="color:var(--purple)" id="val-stay">$150</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-label">🍽️ 饮食</div>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:3%;background:var(--amber)" id="bar-food"></div></div>
+        <div class="budget-amount" style="color:var(--amber)" id="val-food">$100</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-label">🎟️ 景点门票</div>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:2%;background:var(--green)" id="bar-ticket"></div></div>
+        <div class="budget-amount" style="color:var(--green)" id="val-ticket">$60</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-label">🚕 当地交通</div>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:1%;background:var(--blue)" id="bar-transport"></div></div>
+        <div class="budget-amount" style="color:var(--blue)" id="val-transport">$40</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-label">🛍️ 购物手信</div>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:1%;background:var(--teal-dark)" id="bar-shop"></div></div>
+        <div class="budget-amount" style="color:var(--teal-dark)" id="val-shop">$50</div>
+      </div>
+      <div style="height:0.5px;background:var(--border);margin:14px 0"></div>
+      <div class="budget-item">
+        <div class="budget-label" style="font-weight:500">合计</div>
+        <div class="budget-bar-wrap"></div>
+        <div class="budget-amount" style="font-size:16px;font-weight:500;color:var(--text)" id="val-total">$3,100</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✈️ 机票参考（SFO ↔ GIG）</div>
+    <div class="card-sub">提前2个月购买 · 价格波动大</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+      <div style="padding:10px;background:var(--green-light);border-radius:var(--radius-sm)">
+        <div style="font-size:12px;font-weight:500;color:var(--teal-dark)">💰 经济方案（推荐）</div>
+        <div style="font-size:13px;margin-top:4px">SFO → 巴拿马城（Copa）或休斯顿（United）→ 里约，往返约 <strong>$800-900/人</strong></div>
+        <div style="font-size:11px;color:var(--text-hint);margin-top:2px">航程约16-18小时（含中转）· 提前60天购买</div>
+      </div>
+      <div style="padding:10px;background:var(--amber-light);border-radius:var(--radius-sm)">
+        <div style="font-size:12px;font-weight:500;color:var(--amber)">⚡ 快捷方案</div>
+        <div style="font-size:13px;margin-top:4px">SFO → 波哥大（Avianca）或利马（LATAM）→ 里约，往返约 <strong>$900-1,100/人</strong></div>
+        <div style="font-size:11px;color:var(--text-hint);margin-top:2px">中转时间较短 · 南美航司体验独特</div>
+      </div>
+    </div>
+    <div class="alert alert-coral" style="margin-top:12px;margin-bottom:0">
+      <span class="alert-icon">💡</span>
+      <div class="alert-text">机票是最大花销，建议提前60天购买，使用 Google Flights 或 Kayak 比价。若机票超过 $1,000/人，可考虑：① 选择红眼航班 ② 经巴拿马城中转（Copa性价最高）③ 将当地预算适当压缩。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💵 货币 & 支付</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="font-size:14px">💱</span><span style="font-size:13px"><strong>货币：</strong>巴西雷亚尔（BRL / R$）。2026年汇率约 1 USD ≈ 5.5 BRL</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="font-size:14px">💳</span><span style="font-size:13px"><strong>支付：</strong>Visa/Mastercard 在主要景点和餐厅通用，建议每人备现金约 R$500（$90）用于街头小吃和市集</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="font-size:14px">🏧</span><span style="font-size:13px"><strong>取款：</strong>机场和科帕卡巴纳ATM取款最方便，手续费约R$20/次。推荐使用Charles Schwab卡（美国）或Wise卡减少手续费</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="font-size:14px">⚠️</span><span style="font-size:13px">避免在街头随意兑换现金，有假币风险，建议只在银行/正规兑换所兑换</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 每日花销参考（人均，不含机票）</div>
+    <div style="margin-top:10px">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px"><span>住宿（三人均摊）</span><span style="font-weight:500;color:var(--purple)">$25-35/天</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px"><span>三餐（早$4+午$10+晚$20）</span><span style="font-weight:500;color:var(--amber)">$34-40/天</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px"><span>景点门票（均摊）</span><span style="font-weight:500;color:var(--green)">$9-12/天</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px"><span>当地交通（Uber，三人分摊）</span><span style="font-weight:500;color:var(--blue)">$5-8/天</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:14px;font-weight:500"><span>每日合计（不含机票）</span><span style="color:var(--text)">约 $73-95/天</span></div>
+      <div style="font-size:12px;color:var(--text-hint)">7天在地花销（不含机票）：人均约$510-665。若机票$900/人，总花销约$1,410-1,565/人，超出原预算。建议适当提高预算或节省当地花销。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PHOTO ===== -->
+<div class="section" id="section-photo">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--coral-light)">📸</div>
+    <div>
+      <div class="section-title">出片打卡攻略</div>
+      <div class="section-sub">里约最上镜地标 · 拍摄时间建议</div>
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <span class="alert-icon">🌤️</span>
+    <div class="alert-text">
+      <strong>出片黄金时段</strong>
+      日出后1小时（07:00-08:30）和日落前1.5小时（16:30-18:00）光线最柔美。里约是南半球城市，6-8月日落约17:30，光线偏暖适合人像。
+    </div>
+  </div>
+
+  <div class="photo-grid">
+    <div class="photo-spot">
+      <div class="photo-spot-icon">✝️</div>
+      <div class="photo-spot-name">基督山耶稣像</div>
+      <div class="photo-spot-tip">张开双臂模仿耶稣像，或从下方仰拍，俯瞰里约全景，阴天云雾绕山感觉神圣</div>
+      <div class="photo-spot-best">最佳：日出 07:00-08:00</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🚡</div>
+      <div class="photo-spot-name">面包山缆车</div>
+      <div class="photo-spot-tip">缆车厢内对称构图，山顶俯瞰科帕卡巴纳海滩全景，黄金时段有绝美光线</div>
+      <div class="photo-spot-best">最佳：日落前 16:00-18:00</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🎨</div>
+      <div class="photo-spot-name">塞拉龙阶梯</div>
+      <div class="photo-spot-tip">216国瓷砖拼贴，红绿黄三色主导，站在中间阶梯上方俯拍，或坐在台阶上侧拍</div>
+      <div class="photo-spot-best">最佳：早晨 08:00-10:00 人少</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🌅</div>
+      <div class="photo-spot-name">阿罗亚多尔观景台</div>
+      <div class="photo-spot-tip">里约最美日落打卡点，礁石上面朝大海，夕阳余晖下金色海面，日落时全场欢呼</div>
+      <div class="photo-spot-best">最佳：日落前30分钟到达</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🏖️</div>
+      <div class="photo-spot-name">伊帕内玛海滩</div>
+      <div class="photo-spot-tip">蓝天碧海白沙，背景是Dois Irmãos双峰，海浪打脚的剪影照极美</div>
+      <div class="photo-spot-best">最佳：早晨 09:00-11:00</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🎭</div>
+      <div class="photo-spot-name">Santa Teresa街区</div>
+      <div class="photo-spot-tip">色彩斑斓的殖民建筑、街头涂鸦墙、复古电车轨道、无人小巷，随走随拍</div>
+      <div class="photo-spot-best">最佳：全天均可，阴天色彩更饱和</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🌉</div>
+      <div class="photo-spot-name">拉帕拱廊（Arcos da Lapa）</div>
+      <div class="photo-spot-tip">18世纪罗马风格石拱廊，拍对称构图或在拱门下摆拍，夜晚有灯光效果</div>
+      <div class="photo-spot-best">最佳：黄昏或夜间有灯光时</div>
+    </div>
+    <div class="photo-spot">
+      <div class="photo-spot-icon">🌿</div>
+      <div class="photo-spot-name">植物园·皇棕榈大道</div>
+      <div class="photo-spot-tip">笔直的皇棕榈树大道形成天然对称透视，站在中间向远处仰拍，壮观且出片</div>
+      <div class="photo-spot-best">最佳：上午光线好 09:00-12:00</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📱 出片装备建议</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+      <div style="display:flex;gap:8px"><span style="font-size:14px">📱</span><span style="font-size:13px">手机拍照够用，iPhone/Google Pixel的广角人像效果极佳；若有相机更好</span></div>
+      <div style="display:flex;gap:8px"><span style="font-size:14px">🤳</span><span style="font-size:13px">小型三脚架+自拍杆：三人同框必备，推荐Joby GorillaPod</span></div>
+      <div style="display:flex;gap:8px"><span style="font-size:14px">🔋</span><span style="font-size:13px">充电宝：外出一整天拍照耗电快，备两个充电宝</span></div>
+      <div style="display:flex;gap:8px"><span style="font-size:14px">🎨</span><span style="font-size:13px">Lightroom/VSCO预设：提前准备好滤镜预设，统一出片风格更好看</span></div>
+      <div style="display:flex;gap:8px"><span style="font-size:14px">⚠️</span><span style="font-size:13px">注意：在贫民窟附近和人群密集处尽量收起手机，减少被抢风险</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VISA ===== -->
+<div class="section" id="section-visa">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--blue-light)">🛂</div>
+    <div>
+      <div class="section-title">签证及入境</div>
+      <div class="section-sub">持中国或美国护照均免签</div>
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <span class="alert-icon">🎉</span>
+    <div class="alert-text">
+      <strong>免签入境！</strong>
+      巴西对持中国普通护照和美国护照的公民均实施免签入境政策，每次停留不超过30天。一周旅行无需提前办理签证！
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ 免签入境须知</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+      <div style="display:flex;gap:8px"><span style="color:var(--green);font-weight:500;flex-shrink:0">✓</span><span style="font-size:13px">持有效中国普通护照或美国护照，可免签入境巴西</span></div>
+      <div style="display:flex;gap:8px"><span style="color:var(--green);font-weight:500;flex-shrink:0">✓</span><span style="font-size:13px">适用目的：旅游、探亲、短期商务、过境</span></div>
+      <div style="display:flex;gap:8px"><span style="color:var(--green);font-weight:500;flex-shrink:0">✓</span><span style="font-size:13px">停留期：每次不超过30天，7天旅行完全满足</span></div>
+      <div style="display:flex;gap:8px"><span style="color:var(--amber);font-weight:500;flex-shrink:0">!</span><span style="font-size:13px">护照有效期需至少在旅行结束后6个月以上</span></div>
+      <div style="display:flex;gap:8px"><span style="color:var(--amber);font-weight:500;flex-shrink:0">!</span><span style="font-size:13px">免签不代表无条件入境，海关可能查验行程单、往返机票、住宿证明</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌡️ 黄热病疫苗（强烈建议）</div>
+    <div style="margin-top:10px">
+      <div class="alert alert-coral" style="margin-bottom:0">
+        <span class="alert-icon">💉</span>
+        <div class="alert-text">
+          <strong>前往里约热内卢不强制黄热病疫苗，但强烈建议接种</strong>。若行程包含亚马逊雨林或内陆地区，则为强制要求。接种后需等10天才能产生抗体，请提前安排。在美国可联系当地卫生部门或旅行诊所接种。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 入境准备材料清单</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">①</span><div><div style="font-size:13px;font-weight:500">有效护照</div><div style="font-size:12px;color:var(--text-hint)">有效期超出出发日期6个月以上，至少有2页空白页</div></div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">②</span><div><div style="font-size:13px;font-weight:500">往返机票确认单</div><div style="font-size:12px;color:var(--text-hint)">打印出来或手机存档，证明你会在30天内离境</div></div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">③</span><div><div style="font-size:13px;font-weight:500">住宿预订确认</div><div style="font-size:12px;color:var(--text-hint)">Airbnb或酒店预订邮件，打印或截图备用</div></div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-size:14px;flex-shrink:0">④</span><div><div style="font-size:13px;font-weight:500">旅行保险凭证</div><div style="font-size:12px;color:var(--text-hint)">强烈建议购买含医疗保障的旅行保险，备好英文保险单</div></div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--amber);font-size:14px;flex-shrink:0">⑤</span><div><div style="font-size:13px;font-weight:500">黄热病疫苗接种证明（可选但建议）</div><div style="font-size:12px;color:var(--text-hint)">小黄本，部分巴西海关入境或特定地区会检查</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌐 入境流程</div>
+    <div style="margin-top:10px">
+      <div class="visa-step">
+        <div class="visa-num">1</div>
+        <div class="visa-content">
+          <div class="visa-title">填写入境申报表</div>
+          <div class="visa-desc">飞机上会发放纸质表格，部分机场已改为电子申报。如实填写停留天数和住址（填写民宿地址）</div>
+        </div>
+      </div>
+      <div class="visa-step">
+        <div class="visa-num">2</div>
+        <div class="visa-content">
+          <div class="visa-title">排队通过移民检查（Imigração）</div>
+          <div class="visa-desc">出示护照和入境申报表，可能会被问及来访目的和行程。英语或葡萄牙语沟通即可，保持自信回答</div>
+        </div>
+      </div>
+      <div class="visa-step">
+        <div class="visa-num">3</div>
+        <div class="visa-content">
+          <div class="visa-title">取行李 + 海关申报</div>
+          <div class="visa-desc">携带物品申报：带入物品价值超过$500需申报纳税。注意巴西海关对农产品检查较严</div>
+        </div>
+      </div>
+      <div class="visa-step">
+        <div class="visa-num">4</div>
+        <div class="visa-content">
+          <div class="visa-title">出机场 · 乘Uber前往住宿</div>
+          <div class="visa-desc">里约加利昂机场（GIG）有Uber/99（巴西本土打车APP），提前下载APP。机场打车约R$60-80到科帕卡巴纳区</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHECKLIST ===== -->
+<div class="section" id="section-checklist">
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-icon" style="background:var(--amber-light)">✅</div>
+    <div>
+      <div class="section-title">出发前准备清单</div>
+      <div class="section-sub">点击可勾选完成 · 旧金山出发版</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:13px;font-weight:500">完成进度</span>
+      <span id="progress-count" style="font-size:12px;color:var(--text-hint)">0 / 25 项</span>
+    </div>
+    <div class="progress-bar-wrap" style="height:6px;margin-bottom:0">
+      <div class="progress-bar" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="check-section">
+      <div class="check-section-title">🛂 证件准备（出发前2-4周）</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">护照有效期确认超过旅行结束后6个月</div><div class="check-note">有效期不足需提前换发</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">护照复印件 × 3份 + 数字版存手机/云端</div><div class="check-note">遗失时凭复印件向大使馆补办</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">告知家人旅行行程及联系方式</div><div class="check-note">紧急联络人信息</div></div>
+      </div>
+    </div>
+
+    <div class="check-section">
+      <div class="check-section-title">✈️ 订票 & 预订（提前4-6周）</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">购买 SFO ↔ 里约 国际往返机票</div><div class="check-note">Google Flights / Kayak 比价，提前60天购买</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">预订Airbnb民宿（Copacabana或Santa Teresa）</div><div class="check-note">三人整租一套，提前4周预订热门房源</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">提前网购耶稣像门票（含小火车）</div><div class="check-note">官网 tremdocorcovado.com.br，现场购票常售罄</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">提前购买面包山缆车门票</div><div class="check-note">官网 bondinho.com.br，建议选择日落时段</div></div>
+      </div>
+    </div>
+
+    <div class="check-section">
+      <div class="check-section-title">💉 健康 & 保险（出发前3-4周）</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">接种黄热病疫苗（强烈推荐）</div><div class="check-note">在美国可联系当地卫生部门/旅行诊所，接种后需等10天才产生抗体</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">购买境外旅行保险（含医疗）</div><div class="check-note">推荐 World Nomads 或美国本土旅行险，人均$30-60</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">准备常用药品</div><div class="check-note">肠胃药（防水土不服）、创可贴、止痛药、防晒霜SPF50+、防蚊喷雾</div></div>
+      </div>
+    </div>
+
+    <div class="check-section">
+      <div class="check-section-title">💳 金融 & 通讯（出发前1-2周）</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">准备国际信用卡（Visa/Mastercard）</div><div class="check-note">确认境外消费功能已开通，通知银行出行日期免误报欺诈</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">购买巴西 eSIM 或开通国际漫游</div><div class="check-note">推荐 Airalo、Nomad 购买巴西 eSIM，约$15/周；或 T-Mobile/AT&T 国际漫游</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">准备部分现金（巴西雷亚尔）或计划当地ATM取款</div><div class="check-note">每人准备 R$300-500（约$55-90），或带美元到当地换</div></div>
+      </div>
+    </div>
+
+    <div class="check-section">
+      <div class="check-section-title">📱 APP安装（出发前1周）</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">安装 Uber（巴西广泛使用）</div><div class="check-note">在美国绑定信用卡后，到巴西直接使用</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">安装 Google Maps（提前下载里约离线地图）</div><div class="check-note">节省流量，离线也能导航</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">安装 Google Translate（下载葡萄牙语离线包）</div><div class="check-note">巴西人说葡语，英语普及率不高，翻译APP很重要</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">安装 XE Currency（实时汇率换算）</div><div class="check-note">购物时快速换算雷亚尔与美元</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">下载 99 App（巴西本土打车，备用）</div><div class="check-note">Uber在巴西也很好用，99是本土备选</div></div>
+      </div>
+    </div>
+
+    <div class="check-section">
+      <div class="check-section-title">🧳 行李打包（出发前1天）</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">防晒装备：墨镜 + SPF50防晒霜 + 防晒衣/帽</div><div class="check-note">里约紫外线极强，防晒必不可少</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">海滩装备：泳衣泳裤 + 防水袋 + 沙滩鞋</div><div class="check-note">至少带两套泳衣，巴西人穿比基尼和泳裤很正常</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">准备小额分装钱包（用于外出携带少量现金）</div><div class="check-note">里约治安需注意，出门只带当天需用金额，大额钱款放民宿保险柜</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">万能插头转换器 + 充电宝 × 2</div><div class="check-note">巴西插座为 Type N（三孔圆柱型），与美国/中国插头不同，需带转换器</div></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div><div class="check-text">轻便外套（旧金山出发时穿）</div><div class="check-note">SFO出发时气温较低，飞机上和抵达里约后气温差大，需分层穿衣</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-blue">
+    <span class="alert-icon">📞</span>
+    <div class="alert-text">
+      <strong>重要电话号码</strong>
+      巴西紧急求助：190（警察）/ 192（救护车）/ 193（消防）。中国驻巴西大使馆：+55-61-2106-4603。美国驻里约领事馆：+55-21-3823-2000。建议出行前存入手机。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗣️ 简单葡语实用语</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px">
+      <div style="padding:8px;background:var(--gray-light);border-radius:var(--radius-sm)"><div style="font-size:11px;color:var(--text-hint)">你好</div><div style="font-size:13px;font-weight:500">Olá / Oi</div></div>
+      <div style="padding:8px;background:var(--gray-light);border-radius:var(--radius-sm)"><div style="font-size:11px;color:var(--text-hint)">谢谢</div><div style="font-size:13px;font-weight:500">Obrigado/a</div></div>
+      <div style="padding:8px;background:var(--gray-light);border-radius:var(--radius-sm)"><div style="font-size:11px;color:var(--text-hint)">这个多少钱</div><div style="font-size:13px;font-weight:500">Quanto custa?</div></div>
+      <div style="padding:8px;background:var(--gray-light);border-radius:var(--radius-sm)"><div style="font-size:11px;color:var(--text-hint)">帮我拍张照</div><div style="font-size:13px;font-weight:500">Pode tirar foto?</div></div>
+      <div style="padding:8px;background:var(--gray-light);border-radius:var(--radius-sm)"><div style="font-size:11px;color:var(--text-hint)">哪里有厕所</div><div style="font-size:13px;font-weight:500">Onde é o banheiro?</div></div>
+      <div style="padding:8px;background:var(--gray-light);border-radius:var(--radius-sm)"><div style="font-size:11px;color:var(--text-hint)">太好吃了</div><div style="font-size:13px;font-weight:500">Delicioso!</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  本计划由 WorkBuddy 生成 · 2026年6月 · 仅供参考，实际价格以当时为准<br>
+  出发地：旧金山 SFO · 目的地：巴西里约热内卢 GIG · 汇率参考：1 USD ≈ 5.5 BRL
+</div>
+
+<script>
+function switchTab(id) {
+  var els = document.querySelectorAll('.section');
+  for (var i = 0; i < els.length; i++) els[i].classList.remove('active');
+  var tabs = document.querySelectorAll('.nav-tab');
+  for (var j = 0; j < tabs.length; j++) tabs[j].classList.remove('active');
+  var target = document.getElementById('section-' + id);
+  if (target) target.classList.add('active');
+  var names = ['overview','itinerary','food','stay','budget','photo','visa','checklist'];
+  var idx = names.indexOf(id);
+  if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('active');
+}
+
+function toggleDay(n) {
+  var body = document.getElementById('day-' + n);
+  var tog = document.getElementById('toggle-' + n);
+  if (body) body.classList.toggle('open');
+  if (tog) tog.classList.toggle('open');
+}
+
+var budgetData = {
+  total:  { flight:'$2,700', stay:'$150', food:'$100', ticket:'$60', transport:'$40', shop:'$50', total:'$3,100', subtitle:'三人总计 $3,100（飞票按$900/人）', bars:[90,5,3,2,1,1] },
+  person: { flight:'$900',   stay:'$50',  food:'$33', ticket:'$20', transport:'$13', shop:'$17', total:'~$1,033', subtitle:'人均约 $1,033（飞票按$900/人）', bars:[87,5,3,2,1,1] }
+};
+
+function switchBudget(mode) {
+  var btns = document.querySelectorAll('.budget-toggle-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  if (mode === 'total'  && btns[0]) btns[0].classList.add('active');
+  if (mode === 'person' && btns[1]) btns[1].classList.add('active');
+  var d = budgetData[mode];
+  if (!d) return;
+  var ids  = ['val-flight','val-stay','val-food','val-ticket','val-transport','val-shop'];
+  var keys = ['flight','stay','food','ticket','transport','shop'];
+  for (var k = 0; k < ids.length; k++) {
+    var el = document.getElementById(ids[k]);
+    if (el) el.textContent = d[keys[k]];
+  }
+  var totEl = document.getElementById('val-total');
+  if (totEl) totEl.textContent = d.total;
+  var subEl = document.getElementById('budget-subtitle');
+  if (subEl) subEl.textContent = d.subtitle;
+  var barIds = ['bar-flight','bar-stay','bar-food','bar-ticket','bar-transport','bar-shop'];
+  for (var b = 0; b < barIds.length; b++) {
+    var bar = document.getElementById(barIds[b]);
+    if (bar && d.bars) bar.style.width = d.bars[b] + '%';
+  }
+}
+
+function toggleCheck(el) {
+  var box = el.querySelector('.check-box');
+  var txt = el.querySelector('.check-text');
+  if (!box || !txt) return;
+  box.classList.toggle('checked');
+  if (box.classList.contains('checked')) {
+    box.textContent = '✓';
+    txt.classList.add('checked');
+  } else {
+    box.textContent = '';
+    txt.classList.remove('checked');
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  var total = document.querySelectorAll('.check-item').length;
+  var done  = document.querySelectorAll('.check-box.checked').length;
+  var pct = total > 0 ? Math.round(done * 100 / total) : 0;
+  var cnt = document.getElementById('progress-count');
+  if (cnt) cnt.textContent = done + ' / ' + total + ' 项';
+  var fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+function initPage() {
+  var boxes = document.querySelectorAll('.check-box');
+  for (var i = 0; i < boxes.length; i++) boxes[i].textContent = '';
+  updateProgress();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPage);
+} else {
+  initPage();
+}
+</script>
+</body>
+</html>

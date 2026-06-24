@@ -1,0 +1,5 @@
+.workbuddy/
+fix2.py
+fix_budget.py
+*.pyc
+__pycache__/
